@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Шагомер для Газпрома</string>
+    <string name="acquire_wake_lock">Считать шаги в фоне</string>
+    <string name="not_available">Не доступно</string>
+    <string name="steps">шаги</string>
+</resources>
