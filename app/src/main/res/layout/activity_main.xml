@@ -14,7 +14,6 @@
 
         <TextView
             android:id="@+id/steps_count"
-            android:text="0"
             tools:text="222"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

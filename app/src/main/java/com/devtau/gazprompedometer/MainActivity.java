@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
 	private static final String APP_PREFERENCES = "PedometerApplicationSettings";
 	private static final String APP_PREF_WAKE_LOCK = "APP_PREF_WAKE_LOCK";
+	private static final String STEPS_COUNT = "STEPS_COUNT";
 	private ViewGroup stepsLayout;
 	private TextView tvStepsCount, tvPedometerUnavailable;
 	private PowerManager.WakeLock wakeLock;
@@ -33,7 +34,13 @@ public class MainActivity extends AppCompatActivity {
 
 		initControls();
 		initWakeLock();
-		startService(new Intent(this, StepService.class));
+		if(savedInstanceState == null) {
+			tvStepsCount.setText("0");
+			startService(new Intent(this, StepService.class));
+		} else {
+			int stepsCount = savedInstanceState.getInt(STEPS_COUNT);
+			tvStepsCount.setText(String.valueOf(stepsCount));
+		}
 	}
 
 	@Override
@@ -81,7 +88,16 @@ public class MainActivity extends AppCompatActivity {
 		}
 	}
 
-
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		try {
+			int stepsCount = Integer.parseInt(tvStepsCount.getText().toString());
+			outState.putInt(STEPS_COUNT, stepsCount);
+		} catch (NumberFormatException e) {
+			Logger.e(LOG_TAG, "failed to parse stepsCount", e);
+		}
+		super.onSaveInstanceState(outState);
+	}
 
 	@Subscribe
 	public void on(PedometerUnavailableEvent event) {
